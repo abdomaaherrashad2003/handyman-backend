@@ -1,11 +1,17 @@
 const router = require('express').Router();
-const c = require('../controllers/chat.controller');
+const controller = require('../controllers/chat.controller');
+const auth = require('../middlewares/authMiddleware');
 
-router.post('/create', c.createRoom);
-router.get('/messages/:room_id', c.getMessages);
-router.post('/send', c.sendMessage);
+// Create chat room
+router.post('/create', auth, controller.createRoom);
 
-// health check
+// Get messages in a room
+router.get('/messages/:room_id', auth, controller.getMessages);
+
+// Send message
+router.post('/send', auth, controller.sendMessage);
+
+// Health check
 router.get('/health', (req, res) => res.json({ chat: 'ok' }));
 
 module.exports = router;

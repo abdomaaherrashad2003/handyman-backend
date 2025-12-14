@@ -1,9 +1,14 @@
 const router = require('express').Router();
 const controller = require('../controllers/booking.controller');
+const auth = require('../middlewares/authMiddleware');
 
-// يجب أن تكون كل الـ handlers دوال صحيحة
-router.post('/create', controller.create);
-router.get('/user/:id', controller.byUser);
-router.get('/worker/:id', controller.byWorker);
+// User creates booking
+router.post('/create', auth, controller.create);
+
+// Logged-in user bookings
+router.get('/user', auth, controller.byUser);
+
+// Logged-in worker bookings
+router.get('/worker', auth, controller.byWorker);
 
 module.exports = router;

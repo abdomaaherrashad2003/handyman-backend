@@ -1,4 +1,4 @@
-const { verifyToken } = require('./jwtHelper');
+const { verifyToken } = require('../utils/jwtHelper');
 
 function authMiddleware(req, res, next) {
   const auth = req.headers.authorization;

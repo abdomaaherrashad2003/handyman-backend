@@ -1,10 +1,11 @@
 const router = require('express').Router();
-const c = require('../controllers/services.controller');
+const controller = require('../controllers/services.controller');
+const auth = require('../middlewares/authMiddleware');
 
-router.get('/', c.getAll);
-router.get('/:id/workers', c.getWorkersByService);
+router.get('/', controller.getAll);
+router.get('/:id/workers', controller.getWorkersByService);
 
-// health
+// Health check
 router.get('/health', (req, res) => res.json({ services: 'ok' }));
 
 module.exports = router;

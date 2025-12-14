@@ -1,10 +1,14 @@
 const router = require('express').Router();
-const c = require('../controllers/notifications.controller');
+const controller = require('../controllers/notifications.controller');
+const auth = require('../middlewares/authMiddleware');
 
-router.get('/:user_id', c.getAll);
-router.post('/mark-read', c.markRead);
+// Get all notifications for logged-in user
+router.get('/', auth, controller.getAll);
 
-// health
+// Mark notification as read
+router.post('/mark-read', auth, controller.markRead);
+
+// Health check
 router.get('/health', (req, res) => res.json({ notifications: 'ok' }));
 
 module.exports = router;
