@@ -12,7 +12,7 @@ exports.createBooking = async (req, res) => {
       return res.status(400).json({ message: 'Invalid worker id' });
 
     const booking = await Booking.create({
-      user: req.user.id,        // ✅ dynamic
+      user: req.user.id,
       worker: worker_id,
       date,
       time,
@@ -28,17 +28,32 @@ exports.createBooking = async (req, res) => {
 };
 
 exports.myBookings = async (req, res) => {
-  const bookings = await Booking.find({ user: req.user.id })
-    .populate('worker', 'name job_title location rating')
-    .sort({ createdAt: -1 });
+  try {
+    const bookings = await Booking.find({ user: req.user.id })
+      .populate('worker', 'name job_title location rating')
+      .sort({ createdAt: -1 });
 
-  res.json(bookings);
+    res.json(bookings);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
 };
 
 exports.workerBookings = async (req, res) => {
-  const bookings = await Booking.find({ worker: req.user.id })
-    .populate('user', 'name phone')
-    .sort({ createdAt: -1 });
+  try {
+    const bookings = await Booking.find({ worker: req.user.id })
+      .populate('user', 'name phone')
+      .sort({ createdAt: -1 });
 
-  res.json(bookings);
+    res.json(bookings);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// اختياري: GET /booking نفسه
+exports.bookingHome = (req, res) => {
+  res.json({ message: 'Booking API is working ✅' });
 };

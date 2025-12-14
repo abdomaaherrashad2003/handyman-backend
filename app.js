@@ -32,7 +32,7 @@ app.use('/user', require('./routes/user.routes'));
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 'success',
-    message: 'Handyman API is running 🚀'
+    message: 'Handyman API is running'
   });
 });
 
@@ -50,10 +50,10 @@ const PORT = process.env.PORT || 3000;
 connectDB()
   .then(() => {
     app.listen(PORT, () =>
-      console.log(`🚀 Server running on port ${PORT}`)
+      console.log(`Server running on port ${PORT}`)
     );
   })
   .catch(err => {
-    console.error('❌ Failed to connect DB', err);
+    console.error('Failed to connect DB', err);
     process.exit(1);
   });
