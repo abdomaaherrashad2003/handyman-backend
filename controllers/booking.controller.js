@@ -1,61 +1,44 @@
 const Booking = require('../models/Booking');
 const mongoose = require('mongoose');
 
-/** Create Booking (User only) */
-exports.create = async (req, res) => {
+exports.createBooking = async (req, res) => {
   try {
+    if (req.user.role !== 'user')
+      return res.status(403).json({ message: 'Only users can book' });
+
     const { worker_id, date, time, description } = req.body;
 
-    if (req.user.role !== 'user') return res.status(403).json({ message: 'Only users can create bookings' });
-    if (!worker_id || !date || !time) return res.status(400).json({ message: 'Missing required data' });
-    if (!mongoose.Types.ObjectId.isValid(worker_id)) return res.status(400).json({ message: 'Invalid worker id' });
-
-    const bookingDate = new Date(date + 'T' + time);
-    if (bookingDate < new Date()) return res.status(400).json({ message: 'Booking date must be in the future' });
+    if (!mongoose.Types.ObjectId.isValid(worker_id))
+      return res.status(400).json({ message: 'Invalid worker id' });
 
     const booking = await Booking.create({
-      user: req.user.id,
+      user: req.user.id,        // ✅ dynamic
       worker: worker_id,
       date,
       time,
       description
     });
 
-    res.status(201).json({ message: 'Booking created', booking });
+    res.status(201).json(booking);
+
   } catch (err) {
-    console.error('CREATE BOOKING ERROR:', err);
-    res.status(500).json({ message: 'Internal Server Error' });
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-/** Get bookings for logged-in user */
-exports.byUser = async (req, res) => {
-  try {
-    if (req.user.role !== 'user') return res.status(403).json({ message: 'Only users can access their bookings' });
+exports.myBookings = async (req, res) => {
+  const bookings = await Booking.find({ user: req.user.id })
+    .populate('worker', 'name job_title location rating')
+    .sort({ createdAt: -1 });
 
-    const bookings = await Booking.find({ user: req.user.id })
-      .populate('worker', 'name job_title location rating')
-      .sort({ createdAt: -1 });
-
-    res.json(bookings);
-  } catch (err) {
-    console.error('GET USER BOOKINGS ERROR:', err);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
+  res.json(bookings);
 };
 
-/** Get bookings for logged-in worker */
-exports.byWorker = async (req, res) => {
-  try {
-    if (req.user.role !== 'worker') return res.status(403).json({ message: 'Only workers can access their bookings' });
+exports.workerBookings = async (req, res) => {
+  const bookings = await Booking.find({ worker: req.user.id })
+    .populate('user', 'name phone')
+    .sort({ createdAt: -1 });
 
-    const bookings = await Booking.find({ worker: req.user.id })
-      .populate('user', 'name phone')
-      .sort({ createdAt: -1 });
-
-    res.json(bookings);
-  } catch (err) {
-    console.error('GET WORKER BOOKINGS ERROR:', err);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
+  res.json(bookings);
 };

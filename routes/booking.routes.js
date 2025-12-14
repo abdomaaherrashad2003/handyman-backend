@@ -1,14 +1,9 @@
 const router = require('express').Router();
-const controller = require('../controllers/booking.controller');
 const auth = require('../middlewares/authMiddleware');
+const controller = require('../controllers/booking.controller');
 
-// User creates booking
-router.post('/create', auth, controller.create);
-
-// Logged-in user bookings
-router.get('/user', auth, controller.byUser);
-
-// Logged-in worker bookings
-router.get('/worker', auth, controller.byWorker);
+router.post('/create', auth, controller.createBooking);
+router.get('/user', auth, controller.myBookings);
+router.get('/worker', auth, controller.workerBookings);
 
 module.exports = router;
