@@ -1,15 +1,18 @@
+
 const router = require('express').Router();
 const auth = require('../middlewares/authMiddleware');
 const controller = require('../controllers/booking.controller');
 
-// ✅ Route أساسي للـ GET /booking
+// 🔹 Test route
 router.get('/', controller.bookingHome);
 
-// ✅ User booking routes
+// 🔹 Create booking
 router.post('/create', auth, controller.createBooking);
+
+// 🔹 User bookings
 router.get('/user', auth, controller.myBookings);
 
-// ✅ Worker booking routes
+// 🔹 Worker bookings
 router.get('/worker', auth, controller.workerBookings);
 
 module.exports = router;

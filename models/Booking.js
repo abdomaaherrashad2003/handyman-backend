@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
@@ -20,5 +21,8 @@ const bookingSchema = new mongoose.Schema({
     default: 'pending'
   }
 }, { timestamps: true });
+
+// 🔥 يمنع تكرار نفس الحجز
+bookingSchema.index({ worker: 1, date: 1, time: 1 }, { unique: true });
 
 module.exports = mongoose.model('Booking', bookingSchema);
