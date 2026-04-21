@@ -16,7 +16,6 @@ exports.createBooking = async (req, res) => {
       return res.status(400).json({ message: 'Invalid worker id' });
     }
 
-    // 🔥 منع التكرار
     const existing = await Booking.findOne({
       worker: worker_id,
       date,
@@ -48,6 +47,41 @@ exports.createBooking = async (req, res) => {
       });
     }
 
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+/**
+ * Update Booking Status 
+ */
+exports.updateBookingStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    const allowedStatus = ['pending', 'accepted', 'rejected', 'completed'];
+
+    if (!allowedStatus.includes(status)) {
+      return res.status(400).json({ message: 'Invalid status' });
+    }
+
+    const booking = await Booking.findById(req.params.id);
+
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    //  مهم: بس العامل هو اللي يقدر يقبل أو يرفض
+    if (req.user.role === 'worker' && booking.worker.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Not allowed' });
+    }
+
+    booking.status = status;
+    await booking.save();
+
+    res.json(booking);
+
+  } catch (err) {
+    console.error('UPDATE STATUS ERROR:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
