@@ -11,7 +11,11 @@ router.post('/create', auth, controller.createBooking);
 
 // 🔹 User bookings
 router.get('/user', auth, controller.myBookings);
-
+router.patch(
+  '/:bookingId/status',
+  auth,
+  controller.updateBookingStatus
+);
 // 🔹 Worker bookings
 router.get('/worker', auth, controller.workerBookings);
 

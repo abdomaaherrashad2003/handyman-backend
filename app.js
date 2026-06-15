@@ -1,11 +1,10 @@
 require('dotenv').config();
 const express = require('express');
+const app = express(); // 👈 مهم جدًا
 const cors = require('cors');
 const helmet = require('helmet');
 const path = require('path');
 const connectDB = require('./config/db');
-
-const app = express();
 
 // ===== Global Middlewares =====
 app.use(helmet());
@@ -13,6 +12,7 @@ app.use(cors({
   origin: '*', // Flutter / Web
   credentials: true
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -26,8 +26,11 @@ app.use('/booking', require('./routes/booking.routes'));
 app.use('/chat', require('./routes/chat.routes'));
 app.use('/services', require('./routes/services.routes'));
 app.use('/notifications', require('./routes/notifications.routes'));
-app.use('/user', require('./routes/user.routes'));
-
+app.use('/user', require('./routes/user.routes')); // 👈 هنا هنضيف save-token
+app.use('/categories', require('./routes/serviceCategory.routes'));
+app.use('/uploads', express.static('uploads'));
+app.use('/works', require('./routes/previousWork.routes'));
+app.use('/ratings', require('./routes/rating.routes'));
 // ===== Health Check =====
 app.get('/', (req, res) => {
   res.status(200).json({
@@ -39,6 +42,7 @@ app.get('/', (req, res) => {
 // ===== Global Error Handler (مهم جدًا) =====
 app.use((err, req, res, next) => {
   console.error(err);
+
   res.status(err.status || 500).json({
     message: err.message || 'Internal Server Error'
   });
@@ -57,4 +61,3 @@ connectDB()
     console.error('Failed to connect DB', err);
     process.exit(1);
   });
-  
