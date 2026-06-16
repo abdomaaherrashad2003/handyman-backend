@@ -21,7 +21,7 @@ router.get('/health', (req, res) =>
 
 // Upload profile image
 router.put(
-  '/profile-image/:id',
+  '/profile-image',
   auth,
   upload.single('image'),
   controller.updateProfileImage
