@@ -63,7 +63,10 @@ ratingCount: {
     type: Number,
     default: 0
   },
-
+profileImage: {
+  type: String,
+  default: "",
+},
   ratingsCount: {
     type: Number,
     default: 0

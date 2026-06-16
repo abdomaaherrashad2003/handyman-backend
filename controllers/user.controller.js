@@ -1,5 +1,5 @@
 const User = require('../models/User');
-
+const uploadToCloudinary = require("../utils/uploadToCloudinary");
 /**
  * Get user profile by ID
  */
@@ -40,6 +40,34 @@ exports.updateProfile = async (req, res) => {
   } catch (err) {
     console.error('UPDATE PROFILE ERROR:', err);
     res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+exports.updateProfileImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        message: "No image uploaded",
+      });
+    }
+
+    const imageUrl = await uploadToCloudinary(req.file);
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        profileImage: imageUrl,
+      },
+      { new: true }
+    );
+
+    res.json({
+      message: "Profile image updated successfully",
+      user,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
   }
 };
 

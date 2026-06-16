@@ -26,19 +26,14 @@ const bookingSchema = new mongoose.Schema({
 
   description: String,
 
-  problemImage: {
-    type: String,
-    default: ""
+  problemImages: {
+    type: [String],
+    default: []
   },
 
   status: {
     type: String,
-    enum: [
-      'pending',
-      'accepted',
-      'rejected',
-      'completed'
-    ],
+    enum: ['pending', 'accepted', 'rejected', 'completed'],
     default: 'pending'
   }
 
@@ -49,7 +44,4 @@ bookingSchema.index(
   { unique: true }
 );
 
-module.exports = mongoose.model(
-  'Booking',
-  bookingSchema
-);
+module.exports = mongoose.model('Booking', bookingSchema);

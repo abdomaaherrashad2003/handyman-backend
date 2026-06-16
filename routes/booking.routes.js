@@ -1,22 +1,15 @@
-
 const router = require('express').Router();
 const auth = require('../middlewares/authMiddleware');
 const controller = require('../controllers/booking.controller');
 
-// 🔹 Test route
 router.get('/', controller.bookingHome);
 
-// 🔹 Create booking
 router.post('/create', auth, controller.createBooking);
 
-// 🔹 User bookings
 router.get('/user', auth, controller.myBookings);
-router.patch(
-  '/:bookingId/status',
-  auth,
-  controller.updateBookingStatus
-);
-// 🔹 Worker bookings
+
 router.get('/worker', auth, controller.workerBookings);
+
+router.patch('/:bookingId/status', auth, controller.updateBookingStatus);
 
 module.exports = router;
