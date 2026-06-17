@@ -26,6 +26,9 @@ router.put(
   upload.single('image'),
   controller.updateProfileImage
 );
+router.get('/test-image-route', (req, res) => {
+  res.json({ ok: true });
+});
 
 module.exports = router;
 
