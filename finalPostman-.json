@@ -1,0 +1,545 @@
+{
+  "info": {
+    "name": "Handyman API",
+    "_postman_id": "handyman-api-v1",
+    "description": "Handyman Backend Railway API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://handyman-backend-production-e6ac.up.railway.app"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "workerId",
+      "value": ""
+    },
+    {
+      "key": "bookingId",
+      "value": ""
+    },
+    {
+      "key": "roomId",
+      "value": ""
+    },
+    {
+      "key": "notificationId",
+      "value": ""
+    },
+    {
+      "key": "serviceId",
+      "value": ""
+    },
+    {
+      "key": "workId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Root",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/"
+      }
+    },
+
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\":\"Ahmed\",\n  \"email\":\"ahmed@test.com\",\n  \"password\":\"123456\",\n  \"phone\":\"01000000000\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/register-user"
+          }
+        },
+        {
+          "name": "Register Worker",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\":\"Worker One\",\n  \"email\":\"worker@test.com\",\n  \"password\":\"123456\",\n  \"phone\":\"01000000000\",\n  \"job_title\":\"Plumber\",\n  \"location\":\"Cairo\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/register-worker"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\":\"ahmed@test.com\",\n  \"password\":\"123456\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/login"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "User Health",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/user/health"
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/user/{{userId}}"
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\":\"Ahmed Updated\",\n  \"phone\":\"01111111111\",\n  \"bio\":\"Handyman User\"\n}"
+            },
+            "url": "{{baseUrl}}/user/update"
+          }
+        },
+        {
+          "name": "Save FCM Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fcmToken\":\"TEST_FCM_TOKEN\"\n}"
+            },
+            "url": "{{baseUrl}}/user/save-token"
+          }
+        },
+        {
+          "name": "Upload Profile Image",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/user/profile-image"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Workers",
+      "item": [
+        {
+          "name": "Get Workers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/workers"
+          }
+        },
+        {
+          "name": "Get Worker By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/workers/{{workerId}}"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Booking",
+      "item": [
+        {
+          "name": "Booking Health",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/booking"
+          }
+        },
+        {
+          "name": "Create Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"worker_id\":\"{{workerId}}\",\n  \"date\":\"2025-12-01\",\n  \"time\":\"10:00 AM\",\n  \"description\":\"Fix sink\"\n}"
+            },
+            "url": "{{baseUrl}}/booking/create"
+          }
+        },
+        {
+          "name": "My Bookings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/booking/user"
+          }
+        },
+        {
+          "name": "Worker Bookings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/booking/worker"
+          }
+        },
+        {
+          "name": "Update Booking Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\":\"accepted\"\n}"
+            },
+            "url": "{{baseUrl}}/booking/{{bookingId}}/status"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Chat",
+      "item": [
+        {
+          "name": "Create Room",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"worker_id\":\"{{workerId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/chat/create"
+          }
+        },
+        {
+          "name": "Get Messages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/chat/messages/{{roomId}}"
+          }
+        },
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"room_id\":\"{{roomId}}\",\n  \"message\":\"Hello\"\n}"
+            },
+            "url": "{{baseUrl}}/chat/send"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/notifications"
+          }
+        },
+        {
+          "name": "Mark Read",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notification_id\":\"{{notificationId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/notifications/mark-read"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Services",
+      "item": [
+        {
+          "name": "Get Services",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/services"
+          }
+        },
+        {
+          "name": "Get Service Workers",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/services/{{serviceId}}/workers"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\":\"Plumbing\",\n  \"icon\":\"🔧\"\n}"
+            },
+            "url": "{{baseUrl}}/categories"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Works",
+      "item": [
+        {
+          "name": "Add Previous Work",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "description",
+                  "value": "Kitchen Repair",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/works"
+          }
+        },
+        {
+          "name": "Get Worker Works",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/works/{{workerId}}"
+          }
+        },
+        {
+          "name": "Delete Work",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/works/{{workId}}"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Ratings",
+      "item": [
+        {
+          "name": "Create Rating",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workerId\":\"{{workerId}}\",\n  \"bookingId\":\"{{bookingId}}\",\n  \"rating\":5,\n  \"comment\":\"Excellent work\"\n}"
+            },
+            "url": "{{baseUrl}}/ratings"
+          }
+        }
+      ]
+    }
+  ]
+}
